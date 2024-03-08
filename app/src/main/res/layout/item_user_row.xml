@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_outer_layout"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+           android:layout_marginStart="@dimen/_2sdp"
+            android:backgroundTint="#A5A5A5"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/usericon6"/>
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/spartan_bold"
+                android:text="Name"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/user_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/spartan"
+                android:text="Status"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323633140704",
+    "project_id": "chat-bf264",
+    "storage_bucket": "chat-bf264.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323633140704:android:70dc3c5c7aeb5f9e63d185",
+        "android_client_info": {
+          "package_name": "com.example.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323633140704-ldsmg4rdkqmcqcfchnit1r8ugmpquvfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKUcRr-o-qsnrsRx71aYXX6gd6jXywkoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323633140704-ldsmg4rdkqmcqcfchnit1r8ugmpquvfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

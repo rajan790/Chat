@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_back"
+    tools:context=".Activity.login">
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/_3sdp">
+
+        <EditText
+            android:id="@+id/lemail"
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/edit_text"
+            android:ems="10"
+            android:fontFamily="@font/spartan"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_11ssp" />
+
+        <LinearLayout
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/edit_text"
+            android:orientation="horizontal"
+            android:padding="@dimen/_1sdp">
+
+            <EditText
+                android:id="@+id/lpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ems="10"
+                android:fontFamily="@font/spartan"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_11ssp" />
+
+            <ImageButton
+                android:id="@+id/passoff"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@null"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_baseline_visibility_off_24"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/forgot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/spartan"
+            android:text="Forgot password?"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_1sdp"
+
+            android:background="@drawable/button_c2"
+            android:fontFamily="@font/spartan"
+            android:text="@string/login"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15ssp">
+
+        </Button>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout1"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:fontFamily="@font/finger_paint"
+        android:gravity="center_horizontal"
+        android:text="Gossips"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_38ssp"
+        android:textStyle="bold">
+
+    </TextView>
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spartan"
+            android:gravity="bottom"
+            android:text="Don't have an account?  "
+            android:textSize="@dimen/_10ssp" />
+
+        <TextView
+            android:id="@+id/lsignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spartan"
+            android:gravity="bottom"
+            android:text="Signup"
+            android:textColor="#022515"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</RelativeLayout>

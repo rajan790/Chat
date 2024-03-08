@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/aguafina_script</item>
+        <item>@font/akronim</item>
+        <item>@font/alex_brush</item>
+        <item>@font/black_and_white_picture</item>
+        <item>@font/chewy</item>
+        <item>@font/finger_paint</item>
+        <item>@font/shrikhand</item>
+        <item>@font/spartan</item>
+        <item>@font/spartan_bold</item>
+        <item>@font/spartan_thin</item>
+    </array>
+</resources>

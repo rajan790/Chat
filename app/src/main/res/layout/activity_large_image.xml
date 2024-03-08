@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cyellow"
+    tools:context=".Activity.large_image">
+
+    <ImageView
+        android:id="@+id/large_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/noprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No profile photo"
+        android:textSize="@dimen/_15sdp" />
+
+</RelativeLayout>
