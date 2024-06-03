@@ -32,4 +32,12 @@
         <item name="windowMinWidthMajor">80%</item>
         <item name="windowActionBar">false</item>
     </style>
+        <style name="NoShadowFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+            <item name="elevation">0dp</item>
+            <item name="pressedTranslationZ">0dp</item>
+            <item name="rippleColor">@android:color/transparent</item>
+            <item name="android:focusable">false</item>
+            <item name="android:focusableInTouchMode">false</item>
+        </style>
+
 </resources>

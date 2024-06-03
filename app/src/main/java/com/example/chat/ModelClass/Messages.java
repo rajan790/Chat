@@ -5,9 +5,10 @@ public class Messages {
     String senderId;
     String timeStamp;
 
-    public Messages() {
-    }
+    public Messages()
+    {
 
+    }
     public String getMessage() {
         return message;
     }

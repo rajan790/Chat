@@ -35,16 +35,16 @@ FirebaseAuth firebaseAuth;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         firebaseAuth = FirebaseAuth.getInstance();
-        image=getIntent().getStringExtra("image");
-        name=getIntent().getStringExtra("name");
+//        image=getIntent().getStringExtra("image");
+//        name=getIntent().getStringExtra("name");
         profile=findViewById(R.id.profile_image);
         Name=findViewById(R.id.Name);
         l2=findViewById(R.id.l2);
         logout=findViewById(R.id.logout);
         backbtn=findViewById(R.id.backbtn);
-        name=name.substring(0,1).toUpperCase()+name.substring(1);
-        Name.setText(name);
-        Picasso.get().load(image).into(profile);
+//        name=name.substring(0,1).toUpperCase()+name.substring(1);
+//        Name.setText(name);
+//        Picasso.get().load(image).into(profile);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)

@@ -39,19 +39,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Signup extends AppCompatActivity {
 Button signup;
+custom_loading progressDialog;
 ImageButton changeimage,spassoff,scpassoff;
 CircleImageView profile_image;
 EditText name,semail,spass,scpass;
@@ -63,6 +68,9 @@ Boolean create;
 String imageURI;
 TextView slogin;
 Uri imageUri;
+    boolean check;
+    DatabaseReference reference;
+    StorageReference storageReference;
     ActivityResultLauncher<String> mGetContent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +94,7 @@ Uri imageUri;
 //        progressDialog.setCancelable(false);
         final String[] Token = new String[1];
         RotateAnimation rotate = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        custom_loading progressDialog =new custom_loading(Signup.this,"ls");
+        progressDialog =new custom_loading(Signup.this,"ls");
         ImageView imageView=progressDialog.findViewById(R.id.profile_image);
         rotate.setDuration(1000);
         rotate.setRepeatCount(-1);
@@ -94,7 +102,6 @@ Uri imageUri;
         imageView.setAnimation(rotate);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View view) {
                 progressDialog.show();
                 create=true;
@@ -130,7 +137,7 @@ Uri imageUri;
                         @Override
                         public void onComplete(@NonNull Task<SignInMethodQueryResult> task)
                         {
-                            boolean check=!task.getResult().getSignInMethods().isEmpty();
+                            check=!task.getResult().getSignInMethods().isEmpty();
                             if(check)
                             {
                                 Toast.makeText(Signup.this,"Account already register With\nthis Email", Toast.LENGTH_SHORT).show();
@@ -147,85 +154,53 @@ Uri imageUri;
                                             firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful())
-                                                    {
-                                                        DatabaseReference reference=database.getReference().child("user").child(Objects.requireNonNull(firebaseAuth.getUid()));
-                                                        StorageReference storageReference=storage.getReference().child("upload").child(firebaseAuth.getUid());
-                                                        if(imageUri!=null)
-                                                        {
+                                                    if(task.isSuccessful()) {
+                                                        reference = database.getReference().child("user").child(Objects.requireNonNull(firebaseAuth.getUid()));
+                                                        storageReference = storage.getReference().child("upload").child(firebaseAuth.getUid());
+                                                        Users users;
+                                                        if (imageUri != null) {
                                                             storageReference.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                                    if(task.isSuccessful())
-                                                                    {
+                                                                    if (task.isSuccessful()) {
                                                                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                                             @Override
                                                                             public void onSuccess(Uri uri) {
-                                                                                imageURI=uri.toString();
+                                                                                imageURI = uri.toString();
                                                                                 FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
                                                                                     @Override
                                                                                     public void onSuccess(String s) {
-                                                                                        Token[0] =s;
+                                                                                        Token[0] = s;
                                                                                     }
                                                                                 });
-                                                                                Users users =new Users(Name,email,firebaseAuth.getUid(),imageURI,status,0,Token[0]);
-                                                                                reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                    @Override
-                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                        if(task.isSuccessful())
-                                                                                        {
-                                                                                            Toast.makeText(Signup.this, "Confirm your Email", Toast.LENGTH_SHORT).show();
-                                                                                            progressDialog.dismiss();
-                                                                                            signup.setEnabled(true);
-                                                                                            name.setText("");
-                                                                                            semail.setText("");
-                                                                                            spass.setText("");
-                                                                                            scpass.setText("");
-                                                                                            firebaseAuth.signOut();
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            Toast.makeText(Signup.this, "Error in Creating ID", Toast.LENGTH_SHORT).show();
-                                                                                        }
-                                                                                    }
-                                                                                });
+                                                                                LocalDate date= null;
+                                                                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                                                    date = LocalDate.now();
+                                                                                }
+//                                                                                Toast.makeText(Signup.this, ""+date, Toast.LENGTH_SHORT).show();
+                                                                                Users users = new Users(Name, email, firebaseAuth.getUid(), imageURI, status, 0, Token[0]);
+                                                                                work(users);
+
                                                                             }
                                                                         });
                                                                     }
                                                                 }
                                                             });
-                                                        }
-                                                        else
-                                                        {
-                                                            String status="Hey There I'm Using Gossips";
-                                                            imageURI="https://firebasestorage.googleapis.com/v0/b/chat-bf264.appspot.com/o/usericon6.png?alt=media&token=7501dd06-4d2b-4a89-81ab-28dd18af3b20";
+                                                        } else {
+                                                            String status = "Hey There I'm Using Gossips";
+                                                            imageURI = "https://firebasestorage.googleapis.com/v0/b/chat-bf264.appspot.com/o/user.png?alt=media&token=42810325-7fdd-4b88-910e-85d2f65bf4ad";
                                                             FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
                                                                 @Override
                                                                 public void onSuccess(String s) {
-                                                                    Token[0] =s;
+                                                                    Token[0] = s;
                                                                 }
                                                             });
-                                                            Users users =new Users(Name,email,firebaseAuth.getUid(),imageURI,status,0,Token[0]);
-                                                            reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    if(task.isSuccessful())
-                                                                    {
-                                                                        Toast.makeText(Signup.this, "Confirm your Email", Toast.LENGTH_SHORT).show();
-                                                                        signup.setEnabled(true);
-                                                                        progressDialog.dismiss();
-                                                                        name.setText("");
-                                                                        semail.setText("");
-                                                                        spass.setText("");
-                                                                        scpass.setText("");
-                                                                        firebaseAuth.signOut();
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        Toast.makeText(Signup.this, "Error in Creating ID", Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                }
-                                                            });
+                                                            LocalDate date= null;
+                                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                                                date = LocalDate.now();
+                                                            }
+                                                            users = new Users(Name, email, firebaseAuth.getUid(), imageURI, status, 0, Token[0]);
+                                                            work(users);
                                                         }
                                                     }
                                                 }
@@ -254,6 +229,8 @@ Uri imageUri;
                             }
                         }
                     });
+
+
 
         scpassoff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,6 +295,31 @@ Uri imageUri;
             }
         });
     }
+
+    private void work(Users users)
+    {
+        reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Signup.this, "Confirm your Email", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    signup.setEnabled(true);
+                    name.setText("");
+                    semail.setText("");
+                    spass.setText("");
+                    scpass.setText("");
+                    profile_image.setImageResource(R.drawable.ic_baseline_person_24);
+                    firebaseAuth.signOut();
+
+                    startActivity(new Intent(getApplicationContext(),login.class));
+                } else {
+                    Toast.makeText(Signup.this, "Error in Creating ID", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

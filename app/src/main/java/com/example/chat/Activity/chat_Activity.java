@@ -49,6 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -220,7 +221,14 @@ public class chat_Activity extends AppCompatActivity {
                 }
                 message_adapter.smoothScrollToPosition(message_adapter.getBottom());
                 editMessage.setText("");
-                Date date = new Date();
+                String display=message;
+                if(message.length()>10)
+                {
+                    display=message.substring(0,10)+"........";
+                }
+                database.getReference().child("user").child(Objects.requireNonNull(firebaseAuth.getUid())).child("status").setValue(display);
+                database.getReference().child("user").child(ReciverUID).child("status").setValue(display);
+//                Date date = new Date();
                 Calendar calendar =Calendar.getInstance();
 //                SimpleDateFormat mdformat =new SimpleDateFormat("HH:mm");
 //                String time=mdformat.format(calendar.getTime());
@@ -250,6 +258,7 @@ public class chat_Activity extends AppCompatActivity {
                     ap="pm";
                 }
                 Messages messages =new Messages(message,firebaseAuth.getUid(),hour+":"+minute+" "+ap);
+
                 database.getReference().child("chats")
                         .child(senderRoom)
                         .child("messages")

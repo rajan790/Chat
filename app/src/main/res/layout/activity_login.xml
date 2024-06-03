@@ -86,7 +86,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_1sdp"
-
             android:background="@drawable/button_c2"
             android:fontFamily="@font/spartan"
             android:text="@string/login"
@@ -122,7 +121,6 @@
         android:layout_marginBottom="@dimen/_5sdp"
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
