@@ -13,6 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Toolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/cyellow</item>
@@ -26,18 +27,25 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Dialoge">
         <item name="android:windowBackground">@drawable/empty_bac</item>
         <item name="windowNoTitle">true</item>
         <item name="windowMinWidthMajor">80%</item>
         <item name="windowActionBar">false</item>
     </style>
-        <style name="NoShadowFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
-            <item name="elevation">0dp</item>
-            <item name="pressedTranslationZ">0dp</item>
-            <item name="rippleColor">@android:color/transparent</item>
-            <item name="android:focusable">false</item>
-            <item name="android:focusableInTouchMode">false</item>
-        </style>
+
+    <style name="NoShadowFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="elevation">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Chat" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
 
 </resources>

@@ -3,18 +3,25 @@ package com.example.chat.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.arthenica.mobileffmpeg.FFmpeg;
 import com.example.chat.R;
 import com.example.chat.Adapter.UserAdapter;
 import com.example.chat.ModelClass.Users;
@@ -36,15 +43,16 @@ public class Home extends AppCompatActivity {
     ArrayList<Users> usersArrayList;
     SearchView searchView;
     TextView logo;
+    private static final int PICK_VIDEO_REQUEST = 1;
     final String[] up = new String[1];
     final String[] un = new String[1];
     RecyclerView mainUserRecyclerView;
     RelativeLayout layout1;
     UserAdapter adapter;
     boolean check_search=false;
-
     RelativeLayout.LayoutParams pf;
     RelativeLayout.LayoutParams lo;
+    ImageButton add_status;
     RelativeLayout.LayoutParams se;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,7 @@ public class Home extends AppCompatActivity {
         searchView=findViewById(R.id.search_view);
         logo=findViewById(R.id.logo);
         layout1=findViewById(R.id.layout1);
-
+        add_status=findViewById(R.id.add_status);
         pf= (RelativeLayout.LayoutParams) profile.getLayoutParams();
         lo= (RelativeLayout.LayoutParams) logo.getLayoutParams();
         se= (RelativeLayout.LayoutParams) searchView.getLayoutParams();
@@ -130,6 +138,17 @@ public class Home extends AppCompatActivity {
                 searchView.setLayoutParams(layoutParams);
             }
         });
+        add_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("video/*");
+                startActivityForResult(intent, PICK_VIDEO_REQUEST);
+
+            }
+        });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -183,8 +202,6 @@ public class Home extends AppCompatActivity {
     }
     protected void onPause() {
         super.onPause();
-        // Close the search view if it's opened
-
     }
     @Override
     public void onBackPressed() {
@@ -194,8 +211,45 @@ public class Home extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Home.class));
             finish();
         }
-
-//        finishAffinity();
-//        System.exit(0);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri videoUri = data.getData();
+            String videoPath = getRealPathFromURI(videoUri);
+            String outputPath = getExternalFilesDir(null) + "/trimmed_video.mp4";
+            trimVideo(videoPath, outputPath);
+        }
+    }
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Video.Media.DATA};
+        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            String result = cursor.getString(column_index);
+            cursor.close();
+            return result;
+        }
+        return null;
+    }
+    public void trimVideo(String inputPath, String outputPath)
+    {
+        String[] cmd = {"-i", inputPath, "-t", "15", "-c", "copy", outputPath};
+
+        // Execute FFmpeg command
+        FFmpeg.executeAsync(cmd, (executionId, returnCode) -> {
+            if (returnCode == 0) {
+                Log.i("FFmpeg", "Video trimmed successfully");
+            }
+            else
+            {
+                Log.e("FFmpeg", "Failed to trim video");
+            }
+        });
+    }
+
+
 }

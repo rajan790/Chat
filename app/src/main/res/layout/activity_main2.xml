@@ -10,11 +10,13 @@
     tools:context=".Activity.Home">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile"
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_36sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        app:civ_border_width="@dimen/_2sdp"
+        app:civ_border_color="@color/white"
         android:src="@drawable/usericon"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        android:layout_marginTop="@dimen/_8sdp"/>
     <TextView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -27,12 +29,12 @@
         android:textStyle="bold"/>
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
-        android:layout_width="@dimen/_36sdp"
+        android:layout_width="@dimen/_38sdp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:background="@drawable/shape_circle2"
-        android:layout_height="@dimen/_36sdp"/>
+        android:layout_height="@dimen/_40sdp"/>
 
     <RelativeLayout
         android:id="@+id/layout1"
@@ -41,13 +43,52 @@
         android:layout_below="@+id/logo"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/_10sdp"
+        android:paddingTop="@dimen/_15sdp"
+        android:paddingStart="@dimen/_5sdp"
         android:background="@drawable/chat_back">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/status_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/main_status"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:padding="@dimen/_1sdp"
+                android:src="@drawable/usericon"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="@dimen/_1sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/add_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonimage"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/add_a_status"
+                app:layout_constraintBottom_toBottomOf="@+id/main_status"
+                app:layout_constraintEnd_toEndOf="@+id/main_status" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_below="@+id/status_show"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:background="#D3D2D2"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/status_show"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_50sdp"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_toRightOf="@+id/status_layout"
             android:orientation="horizontal"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userRecyclerview"
             android:layout_width="match_parent"
@@ -55,6 +96,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_below="@+id/status_show">
         </androidx.recyclerview.widget.RecyclerView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
