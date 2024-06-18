@@ -1,5 +1,8 @@
 package com.example.chat.Activity;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -21,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.arthenica.mobileffmpeg.FFmpeg;
+import com.example.chat.CropperActivity;
 import com.example.chat.R;
 import com.example.chat.Adapter.UserAdapter;
 import com.example.chat.ModelClass.Users;
@@ -32,23 +35,28 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Home extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase database;
+    FirebaseStorage storage;
     ImageView profile;
     ArrayList<Users> usersArrayList;
     SearchView searchView;
     TextView logo;
+    ActivityResultLauncher<String> mGetContent;
     private static final int PICK_VIDEO_REQUEST = 1;
     final String[] up = new String[1];
     final String[] un = new String[1];
     RecyclerView mainUserRecyclerView;
     RelativeLayout layout1;
     UserAdapter adapter;
+    Uri statusUri;
     boolean check_search=false;
     RelativeLayout.LayoutParams pf;
     RelativeLayout.LayoutParams lo;
@@ -60,6 +68,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         overridePendingTransition(0,0);
         firebaseAuth=FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
         database=FirebaseDatabase.getInstance();
         usersArrayList=new ArrayList<>();
         profile=findViewById(R.id.profile);
@@ -143,10 +152,18 @@ public class Home extends AppCompatActivity {
             public void onClick(View view)
             {
 
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("video/*");
-                startActivityForResult(intent, PICK_VIDEO_REQUEST);
+                Intent intent=new Intent(Intent.ACTION_PICK);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                mGetContent.launch("image/*");
 
+            }
+        });
+        mGetContent=registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                Intent intent = new Intent(getApplicationContext(), CropperActivity.class);
+                intent.putExtra("DATA",result.toString());
+                startActivityForResult(intent,101);
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -216,40 +233,15 @@ public class Home extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri videoUri = data.getData();
-            String videoPath = getRealPathFromURI(videoUri);
-            String outputPath = getExternalFilesDir(null) + "/trimmed_video.mp4";
-            trimVideo(videoPath, outputPath);
-        }
-    }
-    public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Video.Media.DATA};
-        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            String result = cursor.getString(column_index);
-            cursor.close();
-            return result;
-        }
-        return null;
-    }
-    public void trimVideo(String inputPath, String outputPath)
-    {
-        String[] cmd = {"-i", inputPath, "-t", "15", "-c", "copy", outputPath};
-
-        // Execute FFmpeg command
-        FFmpeg.executeAsync(cmd, (executionId, returnCode) -> {
-            if (returnCode == 0) {
-                Log.i("FFmpeg", "Video trimmed successfully");
-            }
-            else
+            String result=data.getStringExtra("RESULT");
+            if(result!=null)
             {
-                Log.e("FFmpeg", "Failed to trim video");
+                statusUri= Uri.parse(result);
             }
-        });
+        }
     }
+
+
 
 
 }
